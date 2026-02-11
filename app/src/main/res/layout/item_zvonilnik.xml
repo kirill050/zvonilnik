@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="14dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="07:30"
+            android:textSize="28sp"
+            android:fontFamily="sans-serif-medium" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/swEnabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvWho"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="#0Вася"
+        android:textSize="14sp"
+        android:textColor="#444444"
+        android:layout_marginTop="4dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="6dp">
+
+        <TextView
+            android:id="@+id/tvNext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Следующий: Сегодня 07:30"
+            android:textSize="13sp"
+            android:textColor="#6A6A6A"/>
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"/>
+    </LinearLayout>
+
+</LinearLayout>

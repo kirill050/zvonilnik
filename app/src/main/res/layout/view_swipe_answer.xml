@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="112dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/swipePill"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@drawable/bg_swipe_pill">
+
+        <View
+            android:id="@+id/targetDecline"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:alpha="0.35"
+            android:background="@drawable/bg_circle_decline"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="12dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/decline"
+            android:focusable="false"
+            android:clickable="false"
+            android:importantForAccessibility="no"
+            />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_call_end"
+            android:tint="@android:color/white"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="24dp"
+            android:importantForAccessibility="no" />
+
+        <View
+            android:id="@+id/targetAnswer"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:alpha="0.35"
+            android:background="@drawable/bg_circle_answer"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/answer"
+            android:focusable="false"
+            android:clickable="false"
+            android:importantForAccessibility="no"
+            />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_call"
+            android:tint="@android:color/white"
+            android:layout_marginEnd="26dp"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="end"
+            android:importantForAccessibility="no" />
+
+        <TextView
+            android:id="@+id/hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Смахните, чтобы ответить"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-medium"
+            android:alpha="0.85"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no"/>
+
+        <FrameLayout
+            android:id="@+id/handle"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_circle_handle"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_call"
+                android:tint="@android:color/white"
+                android:importantForAccessibility="no" />
+        </FrameLayout>
+
+        <!-- Constraint “по месту” делаем через FrameLayout/translationX, поэтому тут без constraints -->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Zvonilnik</string>
+
+    <string name="answer">Ответить</string>
+    <string name="decline">Сбросить</string>
+    <string name="menu_my_zvonilniki">Мои звонильники</string>
+    <string name="menu_create">Создать звонильник</string>
+    <string name="menu_hint">Звонильник — это локальная имитация входящего звонка по расписанию.</string>
+
+    <string name="list_empty">Пока нет звонильников.</string>
+    <string name="delete">Удалить</string>
+
+    <string name="create_title">Создать звонильник</string>
+    <string name="pick_contact">Выбрать из контактов</string>
+    <string name="hint_name">Имя (опционально)</string>
+    <string name="hint_number">Номер телефона (обязательно)</string>
+    <string name="pick_time">Выбрать время</string>
+    <string name="save">Сохранить</string>
+    <string name="create_hint">Два звонильника на одно и то же время не допускаются.</string>
+    <string name="perm_needed">Нужно выдать разрешения и системные доступы (точные будильники, full-screen, батарея), иначе звонки могут не срабатывать.</string>
+    <string name="open_setup">Выдать разрешения</string>
+
+
+</resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootSetup"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="18dp">
+
+    <TextView
+        android:id="@+id/tvSetupStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Настройка…"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnSetupRetry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Открыть настройки ещё раз"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Важно: на Android 14+ для всплывающего экрана вызова нужно включить Full-screen intents.\nЕсли система открывает экран, просто включай переключатель и нажимай Назад — мастер продолжит сам."
+        android:textSize="13sp" />
+</LinearLayout>

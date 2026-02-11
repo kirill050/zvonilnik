@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <TextView
+        android:id="@+id/tvIncoming"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Входящий вызов"
+        android:textColor="#B3FFFFFF"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="34dp"/>
+
+    <FrameLayout
+        android:id="@+id/avatarContainer"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:background="@drawable/bg_circle_handle"
+        app:layout_constraintTop_toBottomOf="@id/tvIncoming"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="36dp">
+
+        <ImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="@drawable/bg_circle_handle"
+            android:clipToOutline="true"
+            android:visibility="gone"
+            android:contentDescription="@string/app_name"/>
+
+        <TextView
+            android:id="@+id/tvAvatarLetter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="?"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            android:fontFamily="sans-serif-medium"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="#0Неизвестный"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintTop_toBottomOf="@id/avatarContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="18dp"/>
+
+    <TextView
+        android:id="@+id/tvNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":000"
+        android:textColor="#B3FFFFFF"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        app:layout_constraintTop_toBottomOf="@id/tvName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="6dp"/>
+
+    <com.megaapp.zvonilnik.ui.DualSwipeActionsView
+        android:id="@+id/dualSwipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

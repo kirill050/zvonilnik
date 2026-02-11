@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <FrameLayout
+        android:id="@+id/avatarContainer"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:background="@drawable/bg_circle_handle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="64dp">
+
+        <ImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"
+            android:outlineProvider="background"
+            android:visibility="gone"
+            android:contentDescription="@string/app_name"/>
+
+        <TextView
+            android:id="@+id/tvAvatarLetter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="?"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            android:fontFamily="sans-serif-medium"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="#0Неизвестный"
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintTop_toBottomOf="@id/avatarContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="18dp"/>
+
+    <TextView
+        android:id="@+id/tvNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":000"
+        android:textColor="#B3FFFFFF"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        app:layout_constraintTop_toBottomOf="@id/tvName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="6dp"/>
+
+    <Chronometer
+        android:id="@+id/chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#B3FFFFFF"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        app:layout_constraintTop_toBottomOf="@id/tvNumber"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="18dp"/>
+
+    <LinearLayout
+        android:id="@+id/controlsRow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="34dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnEnd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_circle_handle">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_mic_off"
+                android:tint="@android:color/white"
+                android:importantForAccessibility="no"/>
+        </FrameLayout>
+
+        <Space
+            android:layout_width="18dp"
+            android:layout_height="1dp"/>
+
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_circle_handle">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_dialpad"
+                android:tint="@android:color/white"
+                android:importantForAccessibility="no"/>
+        </FrameLayout>
+
+        <Space
+            android:layout_width="18dp"
+            android:layout_height="1dp"/>
+
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_circle_handle">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_volume_up"
+                android:tint="@android:color/white"
+                android:importantForAccessibility="no"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/btnEnd"
+        android:layout_width="78dp"
+        android:layout_height="78dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/bg_circle_decline"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_call_end"
+            android:tint="@android:color/white"
+            android:importantForAccessibility="no"/>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
