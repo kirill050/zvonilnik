@@ -1,6 +1,14 @@
 package com.megaapp.zvonilnik.ui
 
 import android.content.Intent
+import android.Manifest
+import android.app.AlarmManager
+import android.content.Context
+import android.os.Build
+import androidx.core.content.ContextCompat
+import android.net.Uri
+import android.os.PowerManager
+import android.provider.Settings
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -27,6 +35,9 @@ class ZvonilnikListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_zvonilnik_list)
+        requestIgnoreBatteryOptimizations()
+        checkExactAlarmPermission()
+
 
         rv = findViewById(R.id.rv)
         tvEmpty = findViewById(R.id.tvEmpty)
@@ -41,6 +52,31 @@ class ZvonilnikListActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnCreateFromList).setOnClickListener {
             startActivity(Intent(this, NewZvonilnikActivity::class.java))
+        }
+    }
+    private fun checkExactAlarmPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {  // API 31+
+            val am = getSystemService(AlarmManager::class.java) as AlarmManager
+            if (!am.canScheduleExactAlarms()) {
+                val intent = Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
+                    data = android.net.Uri.parse("package:$packageName")
+                }
+                startActivity(intent)
+            }
+        }
+    }
+
+    // В class ZvonilnikListActivity, добавь private fun
+    private fun requestIgnoreBatteryOptimizations() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val pm = getSystemService(PowerManager::class.java)
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                    data = Uri.parse("package:$packageName")
+                }
+                startActivity(intent)
+                // Опционально: Toast.makeText(this, "Разрешите игнор оптимизаций для надежных будильников", Toast.LENGTH_LONG).show()
+            }
         }
     }
 

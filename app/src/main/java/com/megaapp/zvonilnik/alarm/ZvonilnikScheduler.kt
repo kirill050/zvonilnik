@@ -1,6 +1,7 @@
 package com.megaapp.zvonilnik.alarm
 
 import android.app.AlarmManager
+import android.os.Build
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -12,21 +13,35 @@ import java.time.temporal.ChronoUnit
 
 object ZvonilnikScheduler {
 
+//    fun scheduleExact(context: Context, id: Long, triggerAtMillis: Long) {
+//        val am = context.getSystemService(AlarmManager::class.java)
+//
+//        val firePi = buildFirePendingIntent(context, id)
+//
+//        val showPi = PendingIntent.getActivity(
+//            context,
+//            9001,
+//            Intent(context, MainActivity::class.java).apply {
+//                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+//            },
+//            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+//        )
+//
+//        am.setAlarmClock(AlarmManager.AlarmClockInfo(triggerAtMillis, showPi), firePi)
+//    }
     fun scheduleExact(context: Context, id: Long, triggerAtMillis: Long) {
         val am = context.getSystemService(AlarmManager::class.java)
+        val intent = Intent(context, ZvonilnikAlarmReceiver::class.java).apply {
+            action = Consts.ACTION_FIRE
+            putExtra(Consts.EXTRA_ID, id)
+        }
+        val pi = PendingIntent.getBroadcast(context, id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
-        val firePi = buildFirePendingIntent(context, id)
-
-        val showPi = PendingIntent.getActivity(
-            context,
-            9001,
-            Intent(context, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            },
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        am.setAlarmClock(AlarmManager.AlarmClockInfo(triggerAtMillis, showPi), firePi)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pi)
+        } else {
+            am.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pi)
+        }
     }
 
     fun cancel(context: Context, id: Long) {

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.app.KeyguardManager
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,11 +23,20 @@ class IncomingCallActivity : AppCompatActivity() {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
         }
-        window.addFlags(
-            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
-                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
-                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-        )
+        // Замена deprecated flags
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {  // API 27+
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+            val km = getSystemService(KeyguardManager::class.java)
+            km.requestDismissKeyguard(this, null)  // Если нужно unlock; иначе убери
+        } else {
+            // Fallback для старых, если нужно
+            window.addFlags(
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+            )
+        }
 
         setContentView(R.layout.activity_incoming_call)
 
