@@ -30,18 +30,37 @@ object ZvonilnikScheduler {
 //        am.setAlarmClock(AlarmManager.AlarmClockInfo(triggerAtMillis, showPi), firePi)
 //    }
     fun scheduleExact(context: Context, id: Long, triggerAtMillis: Long) {
+//        val am = context.getSystemService(AlarmManager::class.java)
+//        val intent = Intent(context, ZvonilnikAlarmReceiver::class.java).apply {
+//            action = Consts.ACTION_FIRE
+//            putExtra(Consts.EXTRA_ID, id)
+//        }
+//        val pi = PendingIntent.getBroadcast(context, id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pi)
+//        } else {
+//            am.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pi)
+//        }
         val am = context.getSystemService(AlarmManager::class.java)
+
         val intent = Intent(context, ZvonilnikAlarmReceiver::class.java).apply {
             action = Consts.ACTION_FIRE
             putExtra(Consts.EXTRA_ID, id)
         }
-        val pi = PendingIntent.getBroadcast(context, id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pi)
-        } else {
-            am.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pi)
-        }
+        val pi = PendingIntent.getBroadcast(
+            context,
+            id.hashCode(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        am.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            triggerAtMillis,
+            pi
+        )
     }
 
     fun cancel(context: Context, id: Long) {
