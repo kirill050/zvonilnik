@@ -38,6 +38,7 @@ object IncomingCallNotifier {
             .setContentText("Звонильник")
             .setCategory(NotificationCompat.CATEGORY_CALL)
             .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setOngoing(true)
             .setAutoCancel(false)
             .setFullScreenIntent(fullScreenPi, true)

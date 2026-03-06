@@ -10,6 +10,8 @@ import com.megaapp.zvonilnik.ui.CallFireActivity
 import com.megaapp.zvonilnik.ui.MainActivity
 import java.time.*
 import java.time.temporal.ChronoUnit
+import android.provider.Settings
+import android.util.Log
 
 object ZvonilnikScheduler {
 
@@ -29,39 +31,38 @@ object ZvonilnikScheduler {
 //
 //        am.setAlarmClock(AlarmManager.AlarmClockInfo(triggerAtMillis, showPi), firePi)
 //    }
-    fun scheduleExact(context: Context, id: Long, triggerAtMillis: Long) {
-//        val am = context.getSystemService(AlarmManager::class.java)
-//        val intent = Intent(context, ZvonilnikAlarmReceiver::class.java).apply {
-//            action = Consts.ACTION_FIRE
-//            putExtra(Consts.EXTRA_ID, id)
-//        }
-//        val pi = PendingIntent.getBroadcast(context, id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pi)
-//        } else {
-//            am.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pi)
-//        }
-        val am = context.getSystemService(AlarmManager::class.java)
+fun scheduleExact(context: Context, id: Long, triggerAtMillis: Long) {
 
-        val intent = Intent(context, ZvonilnikAlarmReceiver::class.java).apply {
-            action = Consts.ACTION_FIRE
-            putExtra(Consts.EXTRA_ID, id)
-        }
+    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        val pi = PendingIntent.getBroadcast(
-            context,
-            id.hashCode(),
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        am.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            triggerAtMillis,
-            pi
-        )
+    if (!alarmManager.canScheduleExactAlarms()) {
+        val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        context.startActivity(intent)
+        Log.w("Zvonilnik", "Exact alarm permission required")
+        return
     }
+
+    val intent = Intent(context, ZvonilnikAlarmReceiver::class.java).apply {
+        action = Consts.ACTION_FIRE
+        putExtra(Consts.EXTRA_ID, id)
+    }
+
+    val pendingIntent = PendingIntent.getBroadcast(
+        context,
+        id.hashCode(),
+        intent,
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    alarmManager.setExactAndAllowWhileIdle(
+        AlarmManager.RTC_WAKEUP,
+        triggerAtMillis,
+        pendingIntent
+    )
+
+    Log.i("Zvonilnik", "Alarm scheduled id=$id time=$triggerAtMillis")
+}
 
     fun cancel(context: Context, id: Long) {
         val am = context.getSystemService(AlarmManager::class.java)
@@ -74,9 +75,22 @@ object ZvonilnikScheduler {
         // если null — это нормально (alarms могло не быть), просто no-op
     }
 
+//    private fun buildFirePendingIntent(context: Context, id: Long): PendingIntent {
+//        val intent = buildFireIntent(context, id)
+//        return PendingIntent.getActivity(
+//            context,
+//            requestCode(id),
+//            intent,
+//            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+//        )
+//    }
     private fun buildFirePendingIntent(context: Context, id: Long): PendingIntent {
-        val intent = buildFireIntent(context, id)
-        return PendingIntent.getActivity(
+        val intent = Intent(context, ZvonilnikAlarmReceiver::class.java).apply {
+            action = Consts.ACTION_FIRE
+            putExtra(Consts.EXTRA_ID, id)
+        }
+
+        return PendingIntent.getBroadcast(
             context,
             requestCode(id),
             intent,
@@ -84,15 +98,28 @@ object ZvonilnikScheduler {
         )
     }
 
-    private fun findFirePendingIntentOrNull(context: Context, id: Long): PendingIntent? {
-        val intent = buildFireIntent(context, id)
-        return PendingIntent.getActivity(
-            context,
-            requestCode(id),
-            intent,
-            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
-        )
-    }
+//    private fun findFirePendingIntentOrNull(context: Context, id: Long): PendingIntent? {
+//        val intent = buildFireIntent(context, id)
+//        return PendingIntent.getActivity(
+//            context,
+//            requestCode(id),
+//            intent,
+//            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+//        )
+//    }
+        private fun findFirePendingIntentOrNull(context: Context, id: Long): PendingIntent? {
+            val intent = Intent(context, ZvonilnikAlarmReceiver::class.java).apply {
+                action = Consts.ACTION_FIRE
+                putExtra(Consts.EXTRA_ID, id)
+            }
+
+            return PendingIntent.getBroadcast(
+                context,
+                requestCode(id),
+                intent,
+                PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+            )
+        }
 
     private fun buildFireIntent(context: Context, id: Long): Intent {
         return Intent(context, CallFireActivity::class.java).apply {

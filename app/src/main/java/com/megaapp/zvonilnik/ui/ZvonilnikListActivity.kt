@@ -68,15 +68,13 @@ class ZvonilnikListActivity : AppCompatActivity() {
 
     // В class ZvonilnikListActivity, добавь private fun
     private fun requestIgnoreBatteryOptimizations() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val pm = getSystemService(PowerManager::class.java)
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                    data = Uri.parse("package:$packageName")
-                }
-                startActivity(intent)
-                // Опционально: Toast.makeText(this, "Разрешите игнор оптимизаций для надежных будильников", Toast.LENGTH_LONG).show()
+        val pm = getSystemService(PowerManager::class.java)
+        if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+            val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                data = Uri.parse("package:$packageName")
             }
+            startActivity(intent)
+            // Опционально: Toast.makeText(this, "Разрешите игнор оптимизаций для надежных будильников", Toast.LENGTH_LONG).show()
         }
     }
 

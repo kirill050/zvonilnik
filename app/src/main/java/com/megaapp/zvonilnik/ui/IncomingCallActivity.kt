@@ -5,6 +5,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.app.KeyguardManager
+import android.app.WallpaperManager
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.megaapp.zvonilnik.R
 import com.megaapp.zvonilnik.telecom.CallController
 import com.megaapp.zvonilnik.telecom.CallSessionStore
+import android.os.Environment
+import android.provider.Settings
 
 class IncomingCallActivity : AppCompatActivity() {
 
@@ -37,8 +42,51 @@ class IncomingCallActivity : AppCompatActivity() {
                         WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
             )
         }
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                    or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                    or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        )
 
         setContentView(R.layout.activity_incoming_call)
+        if (!Environment.isExternalStorageManager()) {
+            val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+            intent.data = Uri.parse("package:$packageName")
+            startActivity(intent)
+        }
+        val bg = findViewById<ImageView>(R.id.bgWallpaper)
+
+        try {
+
+            val wm = WallpaperManager.getInstance(this)
+
+            val pfd = wm.getWallpaperFile(WallpaperManager.FLAG_SYSTEM)
+
+            if (pfd != null) {
+                val bitmap = android.graphics.BitmapFactory.decodeFileDescriptor(pfd.fileDescriptor)
+                pfd.close()
+
+                bg.setImageBitmap(bitmap)
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            bg.setRenderEffect(
+                RenderEffect.createBlurEffect(
+                    120f,
+                    120f,
+                    Shader.TileMode.CLAMP
+                )
+            )
+        }
 
         bindOrFinish()
 

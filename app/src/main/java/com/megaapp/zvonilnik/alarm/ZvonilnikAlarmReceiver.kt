@@ -28,11 +28,13 @@ class ZvonilnikAlarmReceiver : BroadcastReceiver() {
             return
         }
 
-        val pm = context.getSystemService(PowerManager::class.java)
-        val wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "zvonilnik:fire").apply {
-            setReferenceCounted(false)
-            acquire(15_000L)
+//        val pm = context.getSystemService(PowerManager::class.java)
+        val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "zvonilnik:alarm").apply {
+//            setReferenceCounted(false)
+//            acquire(15_000L)
         }
+        wl.acquire(10_000)
 
         io.execute {
             try {
@@ -61,7 +63,7 @@ class ZvonilnikAlarmReceiver : BroadcastReceiver() {
 
                 // 3) Если экран НЕ залочен — явно открываем IncomingCallActivity (фикс кейса "я в приложении и оно вылетает")
                 val km = context.getSystemService(KeyguardManager::class.java)
-                if (!km.isKeyguardLocked) {
+//                if (!km.isKeyguardLocked) {
                     runCatching {
                         context.startActivity(
                             Intent(context, IncomingCallActivity::class.java).apply {
@@ -69,7 +71,7 @@ class ZvonilnikAlarmReceiver : BroadcastReceiver() {
                             }
                         )
                     }
-                }
+//                }
 
                 // Перескейджулим следующий (если повтор)
                 if (z.repeatMask != 0) {

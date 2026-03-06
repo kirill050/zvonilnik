@@ -3,14 +3,19 @@ package com.megaapp.zvonilnik
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import com.megaapp.zvonilnik.data.DbProvider
-
+import android.os.Environment
+import android.provider.Settings
+import android.net.Uri
 class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+
 
         runCatching {
             DbProvider.init(this)
@@ -30,7 +35,6 @@ class App : Application() {
     }
 
     private fun createNotificationChannels() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
 
         val nm = getSystemService(NotificationManager::class.java)
         val calls = NotificationChannel(
@@ -40,7 +44,15 @@ class App : Application() {
         ).apply {
             description = "Incoming call simulation"
             setShowBadge(false)
+            enableVibration(true)
             lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
+
+            setSound(
+                android.provider.Settings.System.DEFAULT_RINGTONE_URI,
+                android.media.AudioAttributes.Builder()
+                    .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+                    .build()
+            )
         }
         nm.createNotificationChannel(calls)
     }

@@ -45,8 +45,12 @@ object Ringer {
 
     private fun startRingtone(context: Context) {
         try {
+            val am = context.getSystemService(AudioManager::class.java)
+            am.mode = AudioManager.MODE_RINGTONE
             val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+
             val rt = RingtoneManager.getRingtone(context, uri) ?: return
+            rt.isLooping = true
             if (Build.VERSION.SDK_INT >= 21) {
                 rt.audioAttributes = AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
@@ -85,10 +89,17 @@ object Ringer {
     private fun startVibrate(context: Context) {
         try {
             val v = getVibrator(context)
-            val pattern = longArrayOf(0, 400, 250, 400, 250, 600)
+            val pattern = longArrayOf(0, 1000, 1000)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val effect = VibrationEffect.createWaveform(pattern, 0)
-                v.vibrate(effect)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    val attrs = android.os.VibrationAttributes.Builder()
+                        .setUsage(android.os.VibrationAttributes.USAGE_RINGTONE)
+                        .build()
+                    v.vibrate(effect, attrs)
+                } else {
+                    v.vibrate(effect)
+                }
             } else {
                 @Suppress("DEPRECATION")
                 v.vibrate(pattern, 0)

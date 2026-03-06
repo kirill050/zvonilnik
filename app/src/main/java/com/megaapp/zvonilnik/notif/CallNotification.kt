@@ -45,10 +45,11 @@ object CallNotification {
             .setContentText("Входящий вызов")
             .setCategory(NotificationCompat.CATEGORY_CALL)
             .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOngoing(true)
             .setAutoCancel(false)
-            .setSilent(true) // звук/вибро делаем сами
+//            .setSilent(true) // звук/вибро делаем сами
             .setFullScreenIntent(fullScreen, true)
             .addAction(0, "Сбросить", declinePi)
             .addAction(0, "Ответить", answerPi)

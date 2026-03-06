@@ -35,6 +35,34 @@ class InCallActivity : AppCompatActivity() {
         Ringer.startInCall()
 
         setContentView(R.layout.activity_in_call)
+        val bg = findViewById<ImageView>(R.id.bgWallpaper)
+
+        try {
+
+            val wm = android.app.WallpaperManager.getInstance(this)
+
+            val pfd = wm.getWallpaperFile(android.app.WallpaperManager.FLAG_SYSTEM)
+
+            if (pfd != null) {
+                val bitmap = android.graphics.BitmapFactory.decodeFileDescriptor(pfd.fileDescriptor)
+                pfd.close()
+
+                bg.setImageBitmap(bitmap)
+            }
+
+        } catch (_: Exception) {
+        }
+
+// blur
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            bg.setRenderEffect(
+                android.graphics.RenderEffect.createBlurEffect(
+                    120f,
+                    120f,
+                    android.graphics.Shader.TileMode.CLAMP
+                )
+            )
+        }
 
         val s = CallSessionStore.current
 
